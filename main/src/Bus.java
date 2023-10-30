@@ -7,12 +7,10 @@ public class Bus {
         busSemaphore = new Semaphore(50);
     }
 
-    public void boardBus() {
-        try {
+    public void boardBus() throws InterruptedException {
             busSemaphore.acquire();
             System.out.println("Rider boarded the bus.");
-        } catch (InterruptedException e) {
-        }
+
     }
 
     public void depart() {

@@ -13,7 +13,7 @@ public class Rider implements Runnable {
             Thread.sleep(new Random().nextInt(30000) + 20000); // Random arrival time between 20 and 50 seconds
             bus.boardBus();
         } catch (InterruptedException e) {
-            // Handle interrupted exception
+            //TODO :: HANDLE INTERRUPTED EXCEPTION
         }
     }
 }
