@@ -19,7 +19,7 @@ public class BusStop {
 
         waitTimeRider = new Random().nextInt(5) * meanRider;
 
-        waitTimeBus = new Random().nextInt(5) * meanBus;
+        waitTimeBus = new Random().nextInt(4) * meanBus;
 
         while (true) {
             long timeCurr = System.currentTimeMillis();
@@ -80,7 +80,7 @@ public class BusStop {
                 waitingRiders = Math.max((waitingRiders - 50), 0);
                 mutex.release();
 
-                System.out.println("Bus departed with " + ridersToBoard + " riders on board.");
+                System.out.println("Bus departed with " + ridersToBoard + " riders");
             } catch (InterruptedException interruptedException) {
             }
         }
