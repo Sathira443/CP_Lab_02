@@ -8,6 +8,18 @@ arrives while the bus is boarding has to wait for the next bus. The capacity of 
 are more than 50 people waiting, some will have to wait for the next bus. When all the waiting riders have
 boarded, the bus can invoke depart. If the bus arrives when there are no riders, it should depart immediately.
 
+# Screenshots
+
+Following screenshots were added which consist of console outputs.
+1. Bus with id 1 with only one rider
+2. Bus with id 2 with 43 riders
+3. Bus with id 3 arrives riders arriving
+4. Bus with id 4 departing without single rider
+5. More than 50 riders waiting for a bus(es)
+6. Bus with id 5 arrives
+7. Bus with id 5 departs with the first 50 riders (others waiting for the next bus)
+8. Bus with id 6 arrives, and riders baord where bus with id 5 left off. Riders continue to arrive at the bus stop 
+
 # Notes
 ```
 cd main/src

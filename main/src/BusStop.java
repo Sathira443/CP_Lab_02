@@ -8,43 +8,41 @@ public class BusStop {
     static Semaphore busArrivalSemaphore = new Semaphore(0);
 
     public static void main(String[] args) {
-        BusStop busStop = new BusStop();
-        int riderId = 0;
+        int riderId = 1, busId = 1;
         long timePrevBus = System.currentTimeMillis();
         long timePrevRider = System.currentTimeMillis();
-        double meanRider = 2000;
-        double meanBus = 10000;
-        double waitTimeRider = 0;
-        double waitTimeBus = 0;
 
-        waitTimeRider = new Random().nextInt(5) * meanRider;
+        double meanRider = 250, meanBus = 10000;
+        double waitTimeRider, waitTimeBus;
+        Random random = new Random();
 
-        waitTimeBus = new Random().nextInt(5) * meanBus;
+        waitTimeRider = random.nextInt(5) * meanRider; // 0 - 1000
+        waitTimeBus = waitTimeRider + random.nextInt(5) * meanBus; // 0 - 40000
 
         while (true) {
-            long timeCurr = System.currentTimeMillis();
+            long timeCurrent = System.currentTimeMillis();
 
-            if ((timeCurr - timePrevRider) == waitTimeRider) {
-                Rider newRider = busStop.new Rider(riderId++);
+            if ((timeCurrent - timePrevRider) >= waitTimeRider) {
+                Rider newRider = new Rider(riderId++);
                 new Thread(newRider).start();
-                timePrevRider = timeCurr;
-                waitTimeRider = new Random().nextInt(5)  * meanRider;
+                timePrevRider = timeCurrent;
+                waitTimeRider = random.nextInt(5)*meanRider;
             }
 
-            if ((timeCurr - timePrevBus) == waitTimeBus) {
-                Bus newBus = busStop.new Bus();
+            if ((timeCurrent - timePrevBus) >= waitTimeBus) {
+                Bus newBus = new Bus(busId++);
                 new Thread(newBus).start();
-                timePrevBus = timeCurr;
-                waitTimeBus = new Random().nextInt(4) * meanBus;
+                timePrevBus = timeCurrent;
+                waitTimeBus = waitTimeRider + random.nextInt(5)*meanBus;
             }
         }
     }
 
-    class Rider implements Runnable {
+    static class Rider implements Runnable {
         private int riderId;
 
-        Rider(int index) {
-            this.riderId = index;
+        public Rider(int riderId) {
+            this.riderId = riderId;
         }
 
         @Override
@@ -56,32 +54,42 @@ public class BusStop {
                 mutex.release();
 
                 busArrivalSemaphore.acquire();
-                System.out.println("Rider with rider id " + riderId + " boarded the bus.");
+                System.out.println("Rider with rider id " + riderId + " boarded the bus");
                 busBoardedSemaphore.release();
-            } catch (InterruptedException interruptedException) {}
+
+
+            } catch (InterruptedException ignored) {
+            }
         }
     }
 
-    class Bus implements Runnable {
+    static class Bus implements Runnable {
         private int ridersToBoard;
+        private int busId;
+
+        public Bus(int busId) {
+            this.busId = busId;
+        }
 
         @Override
         public void run() {
             try {
                 mutex.acquire();
-                System.out.println("Bus has arrived");
+                System.out.println("Bus id with " + busId + " has arrived");
                 ridersToBoard = Math.min(waitingRiders, 50);
+                mutex.release();
 
                 for (int i = 0; i < ridersToBoard; i++) {
                     busArrivalSemaphore.release();
                     busBoardedSemaphore.acquire();
                 }
 
+                mutex.acquire();
                 waitingRiders = Math.max((waitingRiders - 50), 0);
                 mutex.release();
 
-                System.out.println("Bus departed with " + ridersToBoard + " riders on board.");
-            } catch (InterruptedException interruptedException) {
+                System.out.println("Bus id with " + busId + " departed with " + ridersToBoard + " riders on board.");
+            } catch (InterruptedException ignored) {
             }
         }
     }
