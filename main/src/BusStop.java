@@ -35,22 +35,6 @@ public class BusStop {
                 timePrevBus = timeCurrent;
                 waitTimeBus = waitTimeRider + random.nextInt(5)*meanBus;
             }
-//            long timeCurr = System.currentTimeMillis();
-//            if ((timeCurr - timePrevRider) == waitTimeRider) {
-//
-//                Rider newRider = new Rider(riderId++);
-//                new Thread(newRider).start();
-//                timePrevRider = timeCurr;
-//                waitTimeRider = new Random().nextInt(5) * meanRider;
-//
-//            }
-//
-//            if ((timeCurr - timePrevBus) == waitTimeBus) {
-//                Bus newBus = new Bus(busId++);
-//                new Thread(newBus).start();
-//                timePrevBus = timeCurr;
-//                waitTimeBus = waitTimeRider + new Random().nextInt(4) * meanBus;
-//            }
         }
     }
 
