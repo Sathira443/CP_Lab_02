@@ -22,14 +22,14 @@ public class BusStop {
         while (true) {
             long timeCurrent = System.currentTimeMillis();
 
-            if ((timeCurrent - timePrevRider) == waitTimeRider) {
+            if ((timeCurrent - timePrevRider) >= waitTimeRider) {
                 Rider newRider = new Rider(riderId++);
                 new Thread(newRider).start();
                 timePrevRider = timeCurrent;
                 waitTimeRider = random.nextInt(5)*meanRider;
             }
 
-            if ((timeCurrent - timePrevBus) == waitTimeBus) {
+            if ((timeCurrent - timePrevBus) >= waitTimeBus) {
                 Bus newBus = new Bus(busId++);
                 new Thread(newBus).start();
                 timePrevBus = timeCurrent;
