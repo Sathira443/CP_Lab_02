@@ -3,7 +3,7 @@ import java.util.concurrent.Semaphore;
 
 public class BusStop {
     static int waitingRiders = 0;
-    static Semaphore mutex = new Semaphore(2);
+    static Semaphore mutex = new Semaphore(1);
     static Semaphore busBoardedSemaphore = new Semaphore(0);
     static Semaphore busArrivalSemaphore = new Semaphore(0);
 
@@ -17,40 +17,40 @@ public class BusStop {
         Random random = new Random();
 
         waitTimeRider = random.nextInt(5) * meanRider; // 0 - 1000
-        waitTimeBus = waitTimeRider + random.nextInt(5) * meanBus; // 0 - 50000
+        waitTimeBus = waitTimeRider + random.nextInt(5) * meanBus; // 0 - 40000
 
         while (true) {
-//            long timeCurrent = System.currentTimeMillis();
-//
-//            if ((timeCurrent - timePrevRider) == waitTimeRider) {
-//                Rider newRider = new Rider(riderId++);
-//                new Thread(newRider).start();
-//                timePrevRider = timeCurrent;
-//                waitTimeRider = random.nextInt(5)*meanRider;
-//            }
-//
-//            if ((timeCurrent - timePrevBus) == waitTimeBus) {
-//                Bus newBus = new Bus(busId++);
-//                new Thread(newBus).start();
-//                timePrevBus = timeCurrent;
-//                waitTimeBus = random.nextInt(5)*meanBus;
-//            }
-            long timeCurr = System.currentTimeMillis();
-            if ((timeCurr - timePrevRider) == waitTimeRider) {
+            long timeCurrent = System.currentTimeMillis();
 
+            if ((timeCurrent - timePrevRider) == waitTimeRider) {
                 Rider newRider = new Rider(riderId++);
                 new Thread(newRider).start();
-                timePrevRider = timeCurr;
-                waitTimeRider = new Random().nextInt(5) * meanRider;
-
+                timePrevRider = timeCurrent;
+                waitTimeRider = random.nextInt(5)*meanRider;
             }
 
-            if ((timeCurr - timePrevBus) == waitTimeBus) {
+            if ((timeCurrent - timePrevBus) == waitTimeBus) {
                 Bus newBus = new Bus(busId++);
                 new Thread(newBus).start();
-                timePrevBus = timeCurr;
-                waitTimeBus = waitTimeRider + new Random().nextInt(4) * meanBus;
+                timePrevBus = timeCurrent;
+                waitTimeBus = waitTimeRider + random.nextInt(5)*meanBus;
             }
+//            long timeCurr = System.currentTimeMillis();
+//            if ((timeCurr - timePrevRider) == waitTimeRider) {
+//
+//                Rider newRider = new Rider(riderId++);
+//                new Thread(newRider).start();
+//                timePrevRider = timeCurr;
+//                waitTimeRider = new Random().nextInt(5) * meanRider;
+//
+//            }
+//
+//            if ((timeCurr - timePrevBus) == waitTimeBus) {
+//                Bus newBus = new Bus(busId++);
+//                new Thread(newBus).start();
+//                timePrevBus = timeCurr;
+//                waitTimeBus = waitTimeRider + new Random().nextInt(4) * meanBus;
+//            }
         }
     }
 
